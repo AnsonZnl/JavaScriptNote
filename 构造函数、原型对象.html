@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>构造函数、原型对象</title>
+</head>
+<body>
+    <div>
+        <p>1. 定义：原型是function对象的一个属性，
+             他定义了构造函数制造出的对象的公共祖先，
+             通过该构造函数产生的对象，可以继承该原型的属性和方法，
+             原型也是对象
+        </p>
+        <p>2. 利用原型特点和概念，可以提取共有属性。</p>
+        <p>3. 独享如何查看原型->隐式属性_proto_</p>
+        <p>4. 对象如何产看对象的构造函数->constructor
+            它是prototype里的一个属性，指向他的构造函数
+
+        </p>
+    </div>
+    <script>
+        //prototype={} ->原型对象 || 祖先
+        Car.prototype={
+            name:'BMW'
+        }
+        function Car(color){
+            this.color=color;
+        }
+        var car1= new Car('red');
+    </script>
+</body>
+</html>
