@@ -1,3 +1,4 @@
 # blog
-我的博客
+JavaScript学习笔记
 渡一教育：https://ke.qq.com/user/index/index.html#/plan/cid=231577&term_id=100273169
+冴羽的博客：https://github.com/mqyqingfeng/Blog
