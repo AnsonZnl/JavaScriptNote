@@ -68,3 +68,35 @@ function Student(name, age, sex, tel, grade){
 }
 var student = new Student('sunny', 18, 'male', 139, 2017);
 console.log(student);
+
+
+// 函数中 参数按值传递
+// 原始类型传递副本 引用类型传递对象的引用
+// 按值传递很好理解，把函数外部的值复制给函数内部的参数，就和把值从一个变量复制到另一个变量一样。
+
+// var value = 1;
+// function f(v){
+//   v= 2;
+//   console.log(v);//2
+// }
+// f(value);
+// console.log(value);//1
+
+// 引用类型传递对象的引用
+
+// var obj = {
+//   value: 1
+// }
+// function f(o){
+//   o.value= 2;
+//   console.log(o.value);//2
+// }
+// f(obj);
+// console.log(obj.value);//2
+
+// 参数传递方式说的就是从实参给形参复制的过程
+// 值传递就是把实参在内存栈中的数据传递给形参, 
+// 然后你在方法内部就可以使用形参了, 而引用传递是把实参的内存栈的地址编号传递给形参.
+// 按共享传递依然是按值传递，
+// 我也是这样认为的呐，很多人还认为按引用传递也是按值传递，只是值是指针(地址)而已，这个说法也对
+
