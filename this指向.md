@@ -1,3 +1,200 @@
+### this 指向
+
+this的指向：
+1. 全局的函数调用，this指向window
+2. 作为对象方法的调用，this指向该对象
+3. 作为构造函数调用，this指向实例
+4. 使用call/apply/bind调用, this指向第一个参数
+
+- 案例一
+```
+var name = '222';
+var a = {
+  name: '111',
+  say: function(){
+    console.log(this.name);
+  }
+}
+var fun= a.say;
+fun();//222
+a.say();//111
+var b={
+  name: '333',
+  say: function(fun){
+    fun();
+  }
+}
+b.say(a.say);//333 这个错了 是 222
+b.say = a.say;
+b.say();//333
+```
+**解析**
+```
+var fun= a.say; -> 引用 
+b.say(a.say); 走的预编译环节  this指向window
+```
+- 简化版
+```
+var name = '222';
+var a = {
+  name: '111',
+  say: function(){
+    console.log(this.name);
+  }
+}
+var b = {
+  name: '333',
+  say: function(fun){
+    //this -> b
+    //console.log(this) -> b
+    fun();// -> window.fun();
+    //fun() this -> window 全局调用 空执行走预编译 
+  }
+}
+b.say(a.say);// 222
+```
+- 相当于
+
+```
+var name= 'z';
+var obj = {
+  name: 'w',
+  say1: function(){
+    say2();
+  }
+}
+function say2(){
+  console.log(this.name);
+}
+obj.say1();//z
+```
+- arguments.callee和fun.caller
+> arguments.callee -> 返回 自身函数体(引用)，argument.celler -> 返回 函数所在的执行环境，在ES5的严格模式下不允许使用，callee指向函数体(引用)，使用立即执行函数 阶乘
+
+```
+function test(){
+  console.log(arguments.callee);
+  function demo(){
+    console.log(arguments.callee);
+  }
+  demo();//fun demo(){...}
+}
+test();//fun test(){...}
+```
+** argument.celler -> 返回 函数所在的执行环境**
+
+```
+function test(){
+  demo()
+}
+function demo(){
+  console.log(arguments.caller)
+}
+test();//ƒ test(){ demo() }
+```
+**fun.caller -> 返回函数的执行环境**
+
+- 案例二
+```
+var foo = 1;
+function print(){
+  var foo = 3;
+  this.foo = 2;// -> window.foo = 2
+  console.log(foo);
+}
+console.log(foo);//1
+print();//3
+console.log(foo);//2
+new print();//3
+```
+
+- 案例三
+```
+
+// this 指向 
+var a= 5;
+function test(){
+  a= 0;
+  console.log(a);
+  console.log(this.a);
+  var a;
+  console.log(a);
+}
+test();//0 5 0
+/*
+var a= 5;
+function test(){
+  var a= 0;
+  console.log(a);//0
+  console.log(this.a);//5
+  console.log(a);//0
+}
+*/
+new test();// 0 undefined 0
+/*
+var a= 5;
+function test(){
+  //var this = Object.careate(test.prototype); 
+  //var this = {
+  //  __proto__: test.prototype
+  //}
+  var a= 0;
+  console.log(a);//0
+  console.log(this.a);// undefined
+  console.log(a);//0
+}
+*/
+
+```
+
+- 案例四
+
+```
+
+function print(){
+  var marty = {
+    name: 'marty',
+    printName:function(){
+      console.log(this.name);
+    }
+  }
+  var test1 = {name: 'test1'};
+  var test2 = {name: 'test2'};
+  var test3 = {name: 'test3'};
+  test3.printName = marty.printName;
+  var printName2 = marty.printName.bind({name: 123});
+  marty.printName.call(test1);//test1
+  marty.printName.apply(test2);//test2
+  marty.printName();//marty 
+  printName2();//123
+  test3.printName();//test3
+}
+print();
+
+我的答案：test1 test2 test2 123 test3
+正确答案：test1 test2 marty 123 test3
+
+```
+**解析：**
+call和apply使用之后会改变this，然后立即执行。
+bind使用之后会改变this，然后返回一个函数。
+
+- 案例五
+
+```
+var bar = {a: '002'};
+function print(){
+  bar.a = 'a';
+  Object.prototype.b = 'b';
+  return function inner(){
+    console.log(bar.a);
+    console.log(bar.b);
+  }
+}
+print()();// a b
+```
+**解析：**形成闭包 保留print作用域 a 是更改后的a， b 是原型上的b 
+
 - 预编译
 ``` JavaScript
 console.log(foo);
